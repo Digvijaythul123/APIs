@@ -1,0 +1,1469 @@
+{
+	"info": {
+		"_postman_id": "e01c7c14-dacb-440a-9b3a-9ff94c5a3cce",
+		"name": "Selldo API Documentation",
+		"description": "This Documentation contains the API for Lead Creation and related activities to be performed on the lead created in Sell.Do.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19767608",
+		"_collection_link": "https://selldoapi.postman.co/workspace/Sell.do-Workspace~488401ee-1417-47f1-9de2-91a4a28e306b/collection/19767608-e01c7c14-dacb-440a-9b3a-9ff94c5a3cce?action=share&creator=19767608&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Lead",
+			"item": [
+				{
+					"name": "Create a lead",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"//set leadId variable",
+									"let sell_do_lead_id = response.sell_do_lead_id;",
+									"pm.collectionVariables.set(\"lead_crm_id\", sell_do_lead_id);",
+									"",
+									"//Tests",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									"",
+									"pm.test(\"New Lead Created\", function () {",
+									"    pm.expect(response.selldo_lead_details[\"lead_already_exists\"]).to.eql(false);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sell_do\": {\n        \"form\": {\n            \"lead\": {\n                \"first_name\": \"{{$randomFirstName}}\",\n                \"last_name\": \"{{$randomLastName}}\",\n                \"email\": \"{{$randomEmail}}\", //Mandatory\n                \"phone\": \"{{$randomPhoneNumber}}\", //Mandatory\n                \"salutation\": \"mr\",\n                \"time_zone\": \"Asia/Calcutta\",\n                \"user_created_tags\": [\n                    \"wreer\"\n                ],\n                \"stage\": \"incoming\", //Mandatory Field\n                \"status\": \"\",\n                \"nri\": true,\n                \"project_id\": \"{{project_id}}\",\n                \"campaign_id\": \"\",\n                \"sales\": \"{{sales_id}}\",\n                \"profile\": {\n                    \"company\": \"selldo\"\n                },\n                \"received_from\": {\n                    \"campaign_id\": \"\",\n                    \"source\": null,\n                    \"sub_source\": null,\n                    \"project_id\": null\n                },\n                \"channel_partner_id\": \"\",\n                \"primary_email\": {\n                    \"email\": \"\",\n                    \"email_type\": \"office\"\n                },\n                \"primary_phone\": {\n                    \"country_code\": \"in\",\n                    \"dial_code\": \"91\",\n                    \"phone_type\": \"work\",\n                    \"ph_number\": \"\"\n                },\n                \"secondary_emails\": null,\n                \"secondary_phones\": null\n            },\n            \"note\": {\n                \"content\": \"Hello World\"\n            },\n            \"requirement\": {\n                \"bhk\": [\n                    2,\n                    3\n                ],\n                \"property_type\": \"flat\",\n                \"purpose\": \"end_use\",\n                \"locations\": \"pune\",\n                \"min_budget\": \"600000\",\n                \"max_budget\": \"700000\",\n                \"min_possession\": \"12\",\n                \"max_possession\": \"24\",\n                \"facing\": [\n                    \"South\"\n                ],\n                \"furnishing\": [\n                    \"Semi-Furnished\"\n                ],\n                \"bathrooms\": [\n                    \"2\"\n                ],\n                \"funding_source\": \"self\",\n                \"transaction_type\": \"lease\",\n                \"area\": \"112\",\n                \"addresses_fields\": [\n                    {\n                        \"address1\": \"High street\",\n                        \"address2\": \"Balwadi\",\n                        \"country\": \"India\",\n                        \"state\": \"Maharashtra\",\n                        \"city\": \"Pune\",\n                        \"address_type\": \"home-address\",\n                        \"zip\": \"441100\",\n                        \"primary\": true\n                    }\n                ]\n                // \"personal_details\": {\n                //     \"gender\": \"male\",\n                //     \"married\": true,\n                //     \"anniversary\": \"06/06/2022\",\n                //     \"age\": \"\",\n                //     \"birthday\": \"07/06/2022\",\n                //     \"industry\": \"sefs\",\n                //     \"urls\": null,\n                //     \"incomes\": null,\n                //     \"loan_details\": null,\n                //     \"educational_details\": null,\n                //     \"professional_details\": null\n                // }\n            }\n        }\n    },\n    \"api_key\": \"{{api_key}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_url}}/api/leads/create",
+							"host": [
+								"{{Base_url}}"
+							],
+							"path": [
+								"api",
+								"leads",
+								"create"
+							]
+						},
+						"description": "This API is used to **Create** **a New Lead** in Sell.Do.\n\n| **Field** | **Data Type** | **Possible Values** | **Description** |\n| --- | --- | --- | --- |\n| first_name | String |  | Lead will be created in Sell.Do with the given First Name. |\n| last_name | String |  | Lead will be created in Sell.Do with the given Last Name. |\n| email\\* |  |  |  |\n| phone\\* |  |  |  |\n| salutation |  |  |  |\n| time_zone |  |  |  |\n| user_created_tags |  |  |  |\n| stage |  |  |  |\n| status |  |  |  |\n| nri |  |  |  |\n| project_id |  |  |  |\n| campaign_id |  |  |  |\n| sales |  |  |  |\n| profile\\[company\\] |  |  |  |\n| channel_partner_id |  |  |  |\n| note\\[content\\] |  |  |  |\n| requirement\\[bhk\\] |  |  |  |\n| property_type |  |  |  |\n| purpose |  |  |  |\n| locations |  |  |  |\n| min_budget |  |  |  |\n| max_budget |  |  |  |\n| min_possession |  |  |  |\n| max_possession |  |  |  |\n| facing |  |  |  |\n| furnishing |  |  |  |\n| bathrooms |  |  |  |\n| funding_source |  |  |  |\n| transaction_type |  |  |  |\n| area |  |  |  |\n| addresses_fields |  |  |  |\n| api_key |  |  | add website restricted api_key |"
+					},
+					"response": [
+						{
+							"name": "Create a lead successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sell_do\": {\n        \"form\": {\n            \"lead\": {\n                \"first_name\": \"Aileen\",\n                \"last_name\": \"Schoen\",\n                \"email\": \"Katheryn67@hotmail.com\", //Mandatory\n                \"phone\": \"975-556-3771\", //Mandatory\n                \"salutation\": \"mr\",\n                \"time_zone\": \"Asia/Calcutta\",\n                \"user_created_tags\": [\n                    \"wreer\"\n                ],\n                \"stage\": \"incoming\", //Mandatory Field\n                \"status\": \"\",\n                \"nri\": true,\n                \"project_id\": \"587dec4626300a3aca00001c\",\n                \"campaign_id\": \"\",\n                \"sales\": \"587ddb2b5a9db31da9000001\",\n                \"profile\": {\n                    \"company\": \"selldo\"\n                },\n                \"received_from\": {\n                    \"campaign_id\": \"\",\n                    \"source\": null,\n                    \"sub_source\": null,\n                    \"project_id\": null\n                },\n                \"channel_partner_id\": \"\",\n                \"primary_email\": {\n                    \"email\": \"\",\n                    \"email_type\": \"office\"\n                },\n                \"primary_phone\": {\n                    \"country_code\": \"in\",\n                    \"dial_code\": \"91\",\n                    \"phone_type\": \"work\",\n                    \"ph_number\": \"\"\n                },\n                \"secondary_emails\": null,\n                \"secondary_phones\": null\n            },\n            \"note\": {\n                \"content\": \"Hello World\"\n            },\n            \"requirement\": {\n                \"bhk\": [\n                    2,\n                    3\n                ],\n                \"property_type\": \"flat\",\n                \"purpose\": \"end_use\",\n                \"locations\": \"pune\",\n                \"min_budget\": \"600000\",\n                \"max_budget\": \"700000\",\n                \"min_possession\": \"12\",\n                \"max_possession\": \"24\",\n                \"facing\": [\n                    \"South\"\n                ],\n                \"furnishing\": [\n                    \"Semi-Furnished\"\n                ],\n                \"bathrooms\": [\n                    \"2\"\n                ],\n                \"funding_source\": \"self\",\n                \"transaction_type\": \"lease\",\n                \"area\": \"112\",\n                \"addresses_fields\": [\n                    {\n                        \"address1\": \"High street\",\n                        \"address2\": \"Balwadi\",\n                        \"country\": \"India\",\n                        \"state\": \"Maharashtra\",\n                        \"city\": \"Pune\",\n                        \"address_type\": \"home-address\",\n                        \"zip\": \"441100\",\n                        \"primary\": true\n                    }\n                ]\n                // \"personal_details\": {\n                //     \"gender\": \"male\",\n                //     \"married\": true,\n                //     \"anniversary\": \"06/06/2022\",\n                //     \"age\": \"\",\n                //     \"birthday\": \"07/06/2022\",\n                //     \"industry\": \"sefs\",\n                //     \"urls\": null,\n                //     \"incomes\": null,\n                //     \"loan_details\": null,\n                //     \"educational_details\": null,\n                //     \"professional_details\": null\n                // }\n            }\n        }\n    },\n    \"api_key\": \"fa8d6ca0217e676a7b0e06f51c32568c\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://v2.sell.do/api/leads/create",
+									"protocol": "https",
+									"host": [
+										"v2",
+										"sell",
+										"do"
+									],
+									"path": [
+										"api",
+										"leads",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "200 OK"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "fb14fa9a-9eb7-4a3d-aca6-8345bb94327c"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"45437dc202a7199119bec00c592bc8e5\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.854007"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 Jun 2023 09:57:18 GMT"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\"sell_do_lead_id\":\"88656\",\"sell_do_lead_verified\":\"false\",\"error\":[],\"selldo_lead_details\":{\"lead_already_exists\":false,\"lead_created_at\":\"2023-06-23T09:57:17.516Z\",\"exists_by\":\"88656\",\"stage\":\"incoming\",\"stage_changed_on\":null,\"last_sv_conducted_on\":null,\"last_campaign_created_at\":\"2023/06/23 09:57:17 +0000\",\"stage_data\":{\"id\":\"incoming\",\"value\":\"Incoming\"}}}"
+						},
+						{
+							"name": "Error response if not added Mandatory fields",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sell_do\": {\n        \"form\": {\n            \"lead\": {\n                \"first_name\": \"{{$randomFirstName}}\",\n                \"last_name\": \"{{$randomLastName}}\",\n                \"email\": \"\", //Mandatory\n                \"phone\": \"\", //Mandatory\n                \"salutation\": \"mr\",\n                \"time_zone\": \"Asia/Calcutta\",\n                \"user_created_tags\": [\n                    \"wreer\"\n                ],\n                \"stage\": \"incoming\", //Mandatory Field\n                \"status\": \"\",\n                \"nri\": true,\n                \"project_id\": \"{{project_id}}\",\n                \"campaign_id\": \"\",\n                \"sales\": \"{{sales_id}}\",\n                \"profile\": {\n                    \"company\": \"selldo\"\n                },\n                \"received_from\": {\n                    \"campaign_id\": \"\",\n                    \"source\": null,\n                    \"sub_source\": null,\n                    \"project_id\": null\n                },\n                \"channel_partner_id\": \"\",\n                \"primary_email\": {\n                    \"email\": \"\",\n                    \"email_type\": \"office\"\n                },\n                \"primary_phone\": {\n                    \"country_code\": \"in\",\n                    \"dial_code\": \"91\",\n                    \"phone_type\": \"work\",\n                    \"ph_number\": \"\"\n                },\n                \"secondary_emails\": null,\n                \"secondary_phones\": null\n            },\n            \"note\": {\n                \"content\": \"Hello World\"\n            },\n            \"requirement\": {\n                \"bhk\": [\n                    2,\n                    3\n                ],\n                \"property_type\": \"flat\",\n                \"purpose\": \"end_use\",\n                \"locations\": \"pune\",\n                \"min_budget\": \"600000\",\n                \"max_budget\": \"700000\",\n                \"min_possession\": \"12\",\n                \"max_possession\": \"24\",\n                \"facing\": [\n                    \"South\"\n                ],\n                \"furnishing\": [\n                    \"Semi-Furnished\"\n                ],\n                \"bathrooms\": [\n                    \"2\"\n                ],\n                \"funding_source\": \"self\",\n                \"transaction_type\": \"lease\",\n                \"area\": \"112\",\n                \"addresses_fields\": [\n                    {\n                        \"address1\": \"High street\",\n                        \"address2\": \"Balwadi\",\n                        \"country\": \"India\",\n                        \"state\": \"Maharashtra\",\n                        \"city\": \"Pune\",\n                        \"address_type\": \"home-address\",\n                        \"zip\": \"441100\",\n                        \"primary\": true\n                    }\n                ]\n                // \"personal_details\": {\n                //     \"gender\": \"male\",\n                //     \"married\": true,\n                //     \"anniversary\": \"06/06/2022\",\n                //     \"age\": \"\",\n                //     \"birthday\": \"07/06/2022\",\n                //     \"industry\": \"sefs\",\n                //     \"urls\": null,\n                //     \"incomes\": null,\n                //     \"loan_details\": null,\n                //     \"educational_details\": null,\n                //     \"professional_details\": null\n                // }\n            }\n        }\n    },\n    \"api_key\": \"{{api_key}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/api/leads/create",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"api",
+										"leads",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "200 OK"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "05af8445-f8ce-43ff-8c5d-c6b110656493"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"558b0d3d76e03bd6da8a86990a6630e2\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.053114"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 Jun 2023 11:04:00 GMT"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\"sell_do_lead_id\":\"\",\"sell_do_lead_verified\":\"\",\"error\":[\"The email and phone number are not found/valid\"],\"selldo_lead_details\":{\"lead_already_exists\":false,\"lead_created_at\":null,\"exists_by\":\"\",\"stage\":null,\"stage_changed_on\":null,\"last_sv_conducted_on\":null,\"last_campaign_created_at\":null,\"stage_data\":{\"id\":null,\"value\":null}}}"
+						}
+					]
+				},
+				{
+					"name": "Update a lead",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Tests",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"",
+									"//set Lead_db_id variable",
+									"let lead_db_id = response._id;",
+									"pm.collectionVariables.set(\"lead_db_id\", lead_db_id);",
+									"",
+									"//update lead_id",
+									"let lead_crm_id = response.lead_id;",
+									"pm.collectionVariables.set(\"lead_crm_id\", lead_crm_id);",
+									"//set phone variable",
+									"let phone = response.ui_primary_phone.ph_number;",
+									"pm.collectionVariables.set(\"lead_phone\", phone);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"api_key\": \"{{full_access_api_key}}\",\n    \"client_id\": \"{{client_id}}\",\n    \"lead\": {\n        \"salutation\": \"mr\",\n        \"first_name\": \"Update\",\n        \"last_name\": \"API\",\n        \"time_zone\": \"Asia/Calcutta\",\n        \"user_created_tags\": [\n            \"\"\n        ],\n        \"stage\": \"opportunity\",\n        \"status\": \"hot\",\n        \"nri\": true,\n        \"received_from\": {\n            \"campaign_id\": \"\",\n            \"source\": \"\",\n            \"project_id\": \"\"\n        },\n        \"primary_email\": {\n            \"email\": \"{{$randomEmail}}\",\n            \"email_type\": \"office\"\n        },\n        \"primary_phone\": {\n            \"country_code\": \"in\",\n            \"dial_code\": \"91\",\n            \"phone_type\": \"work\"\n        },\n        \"secondary_emails\": [],\n        \"secondary_phones\": [],\n        \"requirement\": {\n            \"min_budget\": \"5000000\",\n            \"max_budget\": \"7000000\",\n            \"min_possession\": \"\",\n            \"max_possession\": \"\",\n            \"property_types\": [],\n            \"facing\": [],\n            \"furnishing\": [],\n            \"bathrooms\": [],\n            \"property_purpose\": [],\n            \"bhk\": [],\n            \"locations\": [],\n            \"funding_source\": \"\",\n            \"transaction_type\": \"\",\n            \"area\": \"\"\n        },\n        \"addresses_fields\": [\n            {\n                \"address1\": \"Balewadi\",\n                \"address2\": \"Highstreet\",\n                \"country\": \"India\",\n                \"state\": \"Maharashtr\",\n                \"city\": \"Pune\",\n                \"address_type\": \"home-address\",\n                \"zip\": \"441100\",\n                \"primary\": true\n            }\n        ],\n        \"lead_profile\": {\n            \"gender\": \"male\",\n            \"married\": true,\n            \"anniversary\": \"13/03/1998\",\n            \"age\": \"25\",\n            \"birthday\": \"13/03/1998\",\n            \"industry\": \"Real Estate\",\n            \"urls\": [],\n            \"incomes\": [],\n            \"loan_details\": [],\n            \"educational_details\": [],\n            \"professional_details\": []\n        },\n        \"removed_ids\": {\n            \"email\": [],\n            \"phone\": [],\n            \"address\": []\n        },\n        \"interested_project_ids\": [\n            \"\"\n        ],\n        \"sales_id\": \"{{sales_id}}\",\n        \"currently_in\": \"pre_sales\",\n        \"push_to_sales\": false,\n        \"team_id\": \"\",\n        \"custom_ddf\": \"ddf pune\",\n        \"custom_call_timing\": \"evening\",\n        \"custom_location\": \"Thailand\",\n        \"custom_test_dropdown\": [],\n        \"custom_data\": \"custom data\",\n        \"custom_lead_account_manager_name\": null,\n        \"custom_lead_category\": \"Lead category\",\n        \"custom_lead_region\": \"Pune api\",\n        \"custom_lead_client_name\": null,\n        \"custom_lead_deparment\": null,\n        \"custom_lead_department\": null,\n        \"custom_reasons_for_purchase\": null,\n        \"custom_avcd\": \"avcd\",\n        \"custom_abcd\": \"abcd\",\n        \"custom_dev\": \"dev\",\n        \"custom_other_remarks\": \"\",\n        \"custom_booked_project\": \"\",\n        \"custom_unit_number\": \"\",\n        \"custom_date_of_booking\": \"\",\n        \"custom_tvs_lead_score\": \"\",\n        \"custom_custom_location\": \"New York\",\n        \"custom_company\": \"K2V2\",\n        \"custom_designation\": \"Product Engineer-1\",\n        \"custom_probability_of_walkin\": \"Probable\",\n        \"custom_floor_plan_custom_field\": \"\",\n        \"custom_annual_income\": [\n            1000000\n        ]\n    },\n    \"project_for_sv\": [\n        \"\"\n    ],\n    \"conducted_on_for_sv\": \"2022-07-07T05:51:00.000Z\",\n    \"activities_data\": {\n        \"push_to_sales_id\": \"\"\n    }\n    // \"user_email\": \"{{user_email}}\",\n    // \"user_token\": \"{{user_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_url}}/client/leads/add_lead_crm_id.json",
+							"host": [
+								"{{Base_url}}"
+							],
+							"path": [
+								"client",
+								"leads",
+								"add_lead_crm_id.json"
+							]
+						},
+						"description": "This API is used to **Update** data on an existing lead in Sell.Do\n\n| **Field** | **Data Type** | **Possible Values** | **Description** |\n| --- | --- | --- | --- |\n| api_key |  |  | add website_full_access_api_key |\n| client_id |  |  |  |\n| lead |  |  | For lead related field details please refer Lead create Api document. |\n| lead.lead_profile.gender |  |  |  |\n| lead.lead_profile.married |  |  |  |\n| lead.lead_profile.anniversary |  |  |  |\n| lead.lead_profile.age |  |  |  |\n| lead.lead_profile.birthday |  |  |  |\n| lead.lead_profile.industry |  |  |  |\n| lead.lead_profile.urls |  |  |  |\n| lead.lead_profile.incomes |  |  |  |\n| lead.lead_profile.loan_details |  |  |  |\n| lead.lead_profile.educational_details |  |  |  |\n| lead.lead_profile.professional_details |  |  |  |\n| currently_in |  |  |  |\n| push_to_sales |  |  |  |\n| team_id |  |  |  |"
+					},
+					"response": [
+						{
+							"name": "Update a lead",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"api_key\": \"{{full_access_api_key}}\",\n    \"client_id\": \"{{client_id}}\",\n    \"lead\": {\n        \"salutation\": \"mr\",\n        \"first_name\": \"Update\",\n        \"last_name\": \"API\",\n        \"time_zone\": \"Asia/Calcutta\",\n        \"user_created_tags\": [\n            \"\"\n        ],\n        \"stage\": \"opportunity\",\n        \"status\": \"hot\",\n        \"nri\": true,\n        \"received_from\": {\n            \"campaign_id\": \"\",\n            \"source\": \"\",\n            \"project_id\": \"\"\n        },\n        \"primary_email\": {\n            \"email\": \"{{$randomEmail}}\",\n            \"email_type\": \"office\"\n        },\n        \"primary_phone\": {\n            \"country_code\": \"in\",\n            \"dial_code\": \"91\",\n            \"phone_type\": \"work\"\n        },\n        \"secondary_emails\": [],\n        \"secondary_phones\": [],\n        \"requirement\": {\n            \"min_budget\": \"5000000\",\n            \"max_budget\": \"7000000\",\n            \"min_possession\": \"\",\n            \"max_possession\": \"\",\n            \"property_types\": [],\n            \"facing\": [],\n            \"furnishing\": [],\n            \"bathrooms\": [],\n            \"property_purpose\": [],\n            \"bhk\": [],\n            \"locations\": [],\n            \"funding_source\": \"\",\n            \"transaction_type\": \"\",\n            \"area\": \"\"\n        },\n        \"addresses_fields\": [\n            {\n                \"address1\": \"Balewadi\",\n                \"address2\": \"Highstreet\",\n                \"country\": \"India\",\n                \"state\": \"Maharashtr\",\n                \"city\": \"Pune\",\n                \"address_type\": \"home-address\",\n                \"zip\": \"441100\",\n                \"primary\": true\n            }\n        ],\n        \"lead_profile\": {\n            \"gender\": \"male\",\n            \"married\": true,\n            \"anniversary\": \"13/03/1998\",\n            \"age\": \"25\",\n            \"birthday\": \"13/03/1998\",\n            \"industry\": \"Real Estate\",\n            \"urls\": [],\n            \"incomes\": [],\n            \"loan_details\": [],\n            \"educational_details\": [],\n            \"professional_details\": []\n        },\n        \"removed_ids\": {\n            \"email\": [],\n            \"phone\": [],\n            \"address\": []\n        },\n        \"interested_project_ids\": [\n            \"\"\n        ],\n        \"sales_id\": \"{{sales_id}}\",\n        \"currently_in\": \"pre_sales\",\n        \"push_to_sales\": false,\n        \"team_id\": \"\",\n        \"custom_ddf\": \"ddf pune\",\n        \"custom_call_timing\": \"evening\",\n        \"custom_location\": \"Thailand\",\n        \"custom_test_dropdown\": [],\n        \"custom_data\": \"custom data\",\n        \"custom_lead_account_manager_name\": null,\n        \"custom_lead_category\": \"Lead category\",\n        \"custom_lead_region\": \"Pune api\",\n        \"custom_lead_client_name\": null,\n        \"custom_lead_deparment\": null,\n        \"custom_lead_department\": null,\n        \"custom_reasons_for_purchase\": null,\n        \"custom_avcd\": \"avcd\",\n        \"custom_abcd\": \"abcd\",\n        \"custom_dev\": \"dev\",\n        \"custom_other_remarks\": \"\",\n        \"custom_booked_project\": \"\",\n        \"custom_unit_number\": \"\",\n        \"custom_date_of_booking\": \"\",\n        \"custom_tvs_lead_score\": \"\",\n        \"custom_custom_location\": \"New York\",\n        \"custom_company\": \"K2V2\",\n        \"custom_designation\": \"Product Engineer-1\",\n        \"custom_probability_of_walkin\": \"Probable\",\n        \"custom_floor_plan_custom_field\": \"\",\n        \"custom_annual_income\": [\n            1000000\n        ]\n    },\n    \"project_for_sv\": [\n        \"\"\n    ],\n    \"conducted_on_for_sv\": \"2022-07-07T05:51:00.000Z\",\n    \"activities_data\": {\n        \"push_to_sales_id\": \"\"\n    }\n    // \"user_email\": \"{{user_email}}\",\n    // \"user_token\": \"{{user_token}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/client/leads/{{lead_id}}.json",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"client",
+										"leads",
+										"{{lead_id}}.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "200 OK"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "16fefe51-5767-409c-9eb6-71e75c180183"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fd3cf24306478e2770fb5919f0b55afe\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "1.421916"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 Jun 2023 10:00:22 GMT"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"62e777f2b08345076a4c6ebf\",\n    \"age\": null,\n    \"channel_partner_id\": \"58ca77955a9db32a99000014\",\n    \"client_id\": \"587ddb2b5a9db31da9000002\",\n    \"country_name\": \"India\",\n    \"created_at\": \"2022-08-01T06:51:30.482Z\",\n    \"currently_in\": \"pre_sales\",\n    \"custom_abcd\": \"abcd\",\n    \"custom_annual_income\": [\n        1000000\n    ],\n    \"custom_avcd\": \"avcd\",\n    \"custom_booked_project\": \"\",\n    \"custom_call_timing\": \"evening\",\n    \"custom_company\": \"K2V2\",\n    \"custom_custom_location\": \"New York\",\n    \"custom_data\": \"custom data\",\n    \"custom_date_of_booking\": \"\",\n    \"custom_ddf\": \"ddf pune\",\n    \"custom_designation\": \"Product Engineer-1\",\n    \"custom_dev\": \"dev\",\n    \"custom_floor_plan_custom_field\": \"\",\n    \"custom_lead_account_manager_name\": null,\n    \"custom_lead_category\": \"Lead category\",\n    \"custom_lead_client_name\": null,\n    \"custom_lead_deparment\": null,\n    \"custom_lead_department\": null,\n    \"custom_lead_region\": \"Pune api\",\n    \"custom_location\": \"Thailand\",\n    \"custom_other_remarks\": \"\",\n    \"custom_probability_of_walkin\": \"Probable\",\n    \"custom_reasons_for_purchase\": null,\n    \"custom_test_dropdown\": [],\n    \"custom_tvs_lead_score\": \"\",\n    \"custom_unit_number\": \"\",\n    \"first_name\": \"Update\",\n    \"hotness\": 10,\n    \"last_contact\": null,\n    \"last_contacted_at\": null,\n    \"last_contacted_attempted_at\": null,\n    \"last_name\": \"API\",\n    \"last_sales_attempted_at\": null,\n    \"last_sales_contacted_at\": null,\n    \"last_ui_data\": {\n        \"call\": null,\n        \"note\": null\n    },\n    \"lead_id\": 64819,\n    \"married\": null,\n    \"nri\": true,\n    \"phone_verified\": false,\n    \"project_id\": null,\n    \"qualified_lead\": \"Yes\",\n    \"quality\": null,\n    \"sales_id\": \"587ddb2b5a9db31da9000001\",\n    \"salutation\": \"mr\",\n    \"secondary_sale_ids\": [],\n    \"sex\": null,\n    \"stage\": \"opportunity\",\n    \"stage_change_reason\": null,\n    \"status\": \"hot\",\n    \"system_created_tags\": [\n        \"walkin\",\n        \"manual_entry\"\n    ],\n    \"tasks\": {\n        \"new_lead\": {\n            \"c\": 0,\n            \"d\": \"Make first contact\",\n            \"dd\": null\n        },\n        \"untouched_lead\": {\n            \"c\": 0,\n            \"d\": \"Establish contact\",\n            \"dd\": null\n        },\n        \"call_later\": {\n            \"c\": 0,\n            \"d\": \"The customer was busy when you called\",\n            \"dd\": null\n        },\n        \"missed_call\": {\n            \"c\": 0,\n            \"d\": \"You missed a call\",\n            \"dd\": null\n        },\n        \"call_feedback\": {\n            \"c\": 0,\n            \"d\": \"Few calls are pending feedback\",\n            \"dd\": null\n        },\n        \"followup_reminder\": {\n            \"c\": 2,\n            \"d\": \"Upcoming followup\",\n            \"dd\": \"2022/08/30 00:00:00 +0000\"\n        },\n        \"pending_followup\": {\n            \"c\": -2,\n            \"d\": \"You didn't followup \",\n            \"dd\": null\n        },\n        \"unscheduled\": {\n            \"c\": 0,\n            \"d\": \"No activity scheduled\",\n            \"dd\": null\n        },\n        \"site_visit_feedback\": {\n            \"c\": 0,\n            \"d\": \"how was the site visit?\",\n            \"dd\": null\n        },\n        \"confirm_site_visit\": {\n            \"c\": 0,\n            \"d\": \"Confirm the site visit\",\n            \"dd\": null\n        },\n        \"schedule_site_visit\": {\n            \"c\": 0,\n            \"d\": \"Drive the customer for a site visit\",\n            \"dd\": null\n        },\n        \"site_visit_reminder\": {\n            \"c\": 0,\n            \"d\": \"Upcoming site visit\",\n            \"dd\": \"2022/08/01 10:53:00 +0000\"\n        },\n        \"unread_email\": {\n            \"c\": 0,\n            \"d\": \"You have unread email(s)\",\n            \"dd\": null\n        },\n        \"unread_whatsapp\": {\n            \"c\": 0,\n            \"d\": \"You have unread whatsapp messages\",\n            \"dd\": null\n        },\n        \"send_brochure\": {\n            \"c\": 0,\n            \"d\": \"send a brochure\",\n            \"dd\": null\n        },\n        \"send_quote\": {\n            \"c\": 0,\n            \"d\": \"send a price quote\",\n            \"dd\": null\n        },\n        \"update_requirements\": {\n            \"c\": 0,\n            \"d\": \"Add requirements\",\n            \"dd\": null\n        },\n        \"update_project\": {\n            \"c\": 0,\n            \"d\": \"update interested project\",\n            \"dd\": null\n        },\n        \"revive_activity\": {\n            \"c\": 0,\n            \"d\": \"revive activity with lead\",\n            \"dd\": null\n        },\n        \"pending_tasks\": {\n            \"c\": 0,\n            \"d\": \"You have pending task(s)\",\n            \"dd\": null\n        }\n    },\n    \"time_zone\": \"Asia/Calcutta\",\n    \"updated_at\": \"2023-06-23T10:00:22.086Z\",\n    \"user_created_tags\": [],\n    \"validated_from_ui\": true,\n    \"partial_load\": false,\n    \"country\": \"India\",\n    \"stage_change_reason_label\": null,\n    \"name\": \"Update API\",\n    \"ui_primary_email\": {\n        \"_id\": \"62e777f2b08345076a4c6ec3\",\n        \"email\": \"jamar_schumm57@gmail.com\",\n        \"email_type\": \"office\",\n        \"opt_in\": true\n    },\n    \"ui_primary_phone\": null,\n    \"ui_secondary_emails\": [],\n    \"ui_secondary_phones\": [],\n    \"is_merged\": false,\n    \"addresses\": [\n        {\n            \"_id\": \"62e777f2b08345076a4c6ec1\",\n            \"address1\": \"wefwe\",\n            \"address2\": \"as\",\n            \"address_type\": \"home-address\",\n            \"addressable_id\": \"62e777f2b08345076a4c6ebf\",\n            \"addressable_type\": \"Lead\",\n            \"city\": \"Pune\",\n            \"client_id\": \"587ddb2b5a9db31da9000002\",\n            \"country\": \"India\",\n            \"country_code\": null,\n            \"created_at\": \"2022-08-01T06:51:30.587Z\",\n            \"primary\": true,\n            \"state\": \"Lakshadweep\",\n            \"updated_at\": \"2022-08-01T06:51:30.587Z\",\n            \"zip\": \"848204\"\n        },\n        {\n            \"_id\": \"64956d35b083452de2f8387e\",\n            \"address1\": \"Balewadi\",\n            \"address2\": \"Highstreet\",\n            \"address_type\": \"home-address\",\n            \"addressable_id\": \"62e777f2b08345076a4c6ebf\",\n            \"addressable_type\": \"Lead\",\n            \"city\": \"Pune\",\n            \"client_id\": \"587ddb2b5a9db31da9000002\",\n            \"country\": \"India\",\n            \"country_code\": null,\n            \"created_at\": \"2023-06-23T10:00:21.826Z\",\n            \"primary\": true,\n            \"state\": \"Maharashtr\",\n            \"updated_at\": \"2023-06-23T10:00:21.826Z\",\n            \"zip\": \"441100\"\n        }\n    ],\n    \"channel_partner\": {\n        \"cp_name\": \"test\",\n        \"broker_name\": \"stuv pl\",\n        \"phone_number\": \"918142526363\",\n        \"email\": \"bdnd@gmzil.com\"\n    },\n    \"lead_profile\": {\n        \"_id\": \"62e777f2b08345076a4c6ec5\",\n        \"age\": 25,\n        \"anniversary\": \"1998-03-13\",\n        \"birthday\": \"1998-03-13\",\n        \"client_id\": \"587ddb2b5a9db31da9000002\",\n        \"educational_details\": [],\n        \"gender\": \"male\",\n        \"incomes\": [],\n        \"industry\": \"Real Estate\",\n        \"lead_id\": \"62e777f2b08345076a4c6ebf\",\n        \"loan_details\": [],\n        \"married\": true,\n        \"professional_details\": [],\n        \"urls\": []\n    },\n    \"requirement\": {\n        \"_id\": \"62e777f2b08345076a4c6ec4\",\n        \"area\": null,\n        \"bathrooms\": [],\n        \"bhk\": [],\n        \"created_at\": \"2022-08-01T06:51:30.600Z\",\n        \"facing\": [],\n        \"funding_source\": \"\",\n        \"furnishing\": [],\n        \"interested_in_resale\": null,\n        \"locations\": [],\n        \"max_budget\": 7000000,\n        \"max_possession\": null,\n        \"min_budget\": 5000000,\n        \"min_possession\": null,\n        \"property_purpose\": [],\n        \"property_types\": [],\n        \"purpose\": \"end_use\",\n        \"transaction_type\": \"\",\n        \"updated_at\": \"2023-06-23T10:00:22.277Z\"\n    },\n    \"booking_detail_ids\": [],\n    \"active_booking_ids\": [],\n    \"interested_projects\": [\n        {\n            \"brochure_status\": \"Not Sent\",\n            \"status\": false,\n            \"lead_id\": \"62e777f2b08345076a4c6ebf\",\n            \"stage\": \"Prospect\",\n            \"dropoff_reason\": \"\",\n            \"value\": null,\n            \"close_date\": null,\n            \"inventory_enabled\": true,\n            \"vr_enabled\": true,\n            \"developer_name\": \"Pandit Developers\",\n            \"developer_id\": \"58ef2ef85a9db363b1000011\",\n            \"city\": \"Pune\",\n            \"state\": \"Maharashtra\",\n            \"country\": \"India\",\n            \"project_location\": {\n                \"lat\": \"18\",\n                \"lng\": \" 73\"\n            },\n            \"project_name\": \"Project Secure\",\n            \"created_at\": \"2022-08-01T06:51:30.643Z\",\n            \"project_active\": true,\n            \"inventory\": [],\n            \"project_units\": [],\n            \"price_quote_status\": \"Not Sent\",\n            \"project_id\": \"587dec4626300a3aca00001c\",\n            \"site_visit_scheduled_on\": \"2022-06-21T12:17:00.000+00:00\",\n            \"site_visit_status\": \"pending\",\n            \"_id\": \"62e777f2b08345076a4c6ec0\",\n            \"site_visits\": [\n                {\n                    \"_id\": \"62e777f2b08345076a4c6ec7\",\n                    \"status\": \"pending\",\n                    \"scheduled_on\": \"2022-06-21T12:17:00.000+00:00\",\n                    \"conducted_on\": null,\n                    \"confirmed\": true,\n                    \"conducted_by\": null\n                },\n                {\n                    \"_id\": \"62e777f3b08345076a4c6eca\",\n                    \"status\": \"conducted\",\n                    \"scheduled_on\": \"2022-06-16T11:17:00.000+00:00\",\n                    \"conducted_on\": \"2022-06-16T11:17:00.000+00:00\",\n                    \"confirmed\": true,\n                    \"conducted_by\": null\n                }\n            ],\n            \"walkthroughs\": [],\n            \"interested_project_unit_ids\": []\n        },\n        {\n            \"brochure_status\": \"Not Sent\",\n            \"status\": false,\n            \"lead_id\": \"62e777f2b08345076a4c6ebf\",\n            \"stage\": \"Prospect\",\n            \"dropoff_reason\": \"\",\n            \"value\": null,\n            \"close_date\": null,\n            \"inventory_enabled\": true,\n            \"vr_enabled\": true,\n            \"developer_name\": \"Amu\",\n            \"developer_id\": \"58ef2ef85a9db363b1000011\",\n            \"city\": \"pune\",\n            \"state\": \"Maharashtra\",\n            \"country\": \"India\",\n            \"project_location\": {\n                \"lat\": \"12.12\",\n                \"lng\": \"13.13\"\n            },\n            \"project_name\": \"Project.Phase_2\",\n            \"created_at\": \"2022-08-01T09:53:57.651Z\",\n            \"project_active\": true,\n            \"inventory\": [],\n            \"project_units\": [],\n            \"price_quote_status\": \"Not Sent\",\n            \"project_id\": \"5886efb35a9db35df300000a\",\n            \"site_visit_scheduled_on\": \"2022-08-01T10:53:00.000+00:00\",\n            \"site_visit_status\": \"pending\",\n            \"_id\": \"62e7a2b5b083451ed03a0abb\",\n            \"site_visits\": [\n                {\n                    \"_id\": \"62e7a2b5b083451ed03a0aba\",\n                    \"status\": \"pending\",\n                    \"scheduled_on\": \"2022-08-01T10:53:00.000+00:00\",\n                    \"conducted_on\": null,\n                    \"confirmed\": true,\n                    \"conducted_by\": null\n                }\n            ],\n            \"walkthroughs\": [],\n            \"interested_project_unit_ids\": []\n        }\n    ],\n    \"todo_tasks\": [],\n    \"generated_from\": {\n        \"name\": \"walkin\",\n        \"source\": \"\",\n        \"sub_source\": \"\"\n    },\n    \"system_created_tags_old\": [\n        \"c_walkin\",\n        \"m_manual_entry\"\n    ],\n    \"next_followup\": null,\n    \"touched\": true,\n    \"last_stage_changed_on\": 1687514421,\n    \"next_activity_scheduled\": false,\n    \"isMine\": false,\n    \"extras\": {\n        \"sales_id\": {\n            \"id\": \"587ddb2b5a9db31da9000001\",\n            \"text\": \"Tanmay Ghawte\"\n        },\n        \"salutation\": {\n            \"id\": \"mr\",\n            \"text\": \"Mr.\"\n        }\n    },\n    \"asset_data\": [],\n    \"stage_data\": {\n        \"id\": \"opportunity\",\n        \"value\": \"Opportunity\"\n    },\n    \"total_site_visit_conducted_count\": 1\n}"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Lead",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"//Tests",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"New Lead Created\", function () {",
+									"    pm.expect(response.exists).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://v2.sell.do/api/leads/phone/retrieve_lead?api_key=add_website_full_access_api_key&value=add_lead_phone",
+							"protocol": "https",
+							"host": [
+								"v2",
+								"sell",
+								"do"
+							],
+							"path": [
+								"api",
+								"leads",
+								"phone",
+								"retrieve_lead"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "add_website_full_access_api_key"
+								},
+								{
+									"key": "value",
+									"value": "add_lead_phone"
+								}
+							]
+						},
+						"description": "This API is used to **Retrieve** lead related data from the database in Sell.Do."
+					},
+					"response": [
+						{
+							"name": "Retrieve Lead",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://v2.sell.do/api/leads/phone/retrieve_lead?api_key=fa8d6ca0217e676a7b0e06f51c32568c&value=7972585329",
+									"protocol": "https",
+									"host": [
+										"v2",
+										"sell",
+										"do"
+									],
+									"path": [
+										"api",
+										"leads",
+										"phone",
+										"retrieve_lead"
+									],
+									"query": [
+										{
+											"key": "api_key",
+											"value": "fa8d6ca0217e676a7b0e06f51c32568c"
+										},
+										{
+											"key": "value",
+											"value": "7972585329"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "200 OK"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "c3d9640f-a706-4f88-9619-9a7dfc54011b"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b0abf4e10d28f1e1ce98c4958f3ceaa6\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.038248"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 Jun 2023 11:25:04 GMT"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "_session_id=L05kbjAvbEYxcUJjcWJGVG85NUxWYzFzTlUwS0xsNFpZVWh2S1BkNkxkWk5reThMbXJkWlkyamhOQkFsYzVFeHh4eFM0K0h5bUZHZmd3MTRqRUJVTHc9PS0tNlRUaXBXRW1PVWFnb0pIRFg0UHZ5dz09--06803766aeb22c0836f35699a6e9c15311ee0bb2; path=/; HttpOnly; secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "_session_id=L05kbjAvbEYxcUJjcWJGVG85NUxWYzFzTlUwS0xsNFpZVWh2S1BkNkxkWk5reThMbXJkWlkyamhOQkFsYzVFeHh4eFM0K0h5bUZHZmd3MTRqRUJVTHc9PS0tNlRUaXBXRW1PVWFnb0pIRFg0UHZ5dz09--06803766aeb22c0836f35699a6e9c15311ee0bb2; path=/; HttpOnly; secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "_crm_session=VlZZMm1mSVl3cTBVVGNmemVpOHhubzJEdnd1WmFqS0tyZUk2T055UmEwQ0lMY0E4K2txaHQ5WXExdUgyd3J2LzZWcDBkRTdONEpQSWF4eC9LcDdPN3c9PS0tM0lXbVRGNlp6MmJ3NWdYMXpZY1BHUT09--919996e38b2ac04c165341e14c608670bed4359c; path=/; HttpOnly; secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "_session_id=Z1hmMGxuYUZ4Q0x3MG11SXpuRTRXWDVlaEFicHNTcCtHQk9qZWltYm9mVmVyZWdqUTlJdm5wNTVsVTAwdDFKVk83RjNzV3lnYmFBZ3h2SEZHMGxlY1E9PS0tUmRtalJzTkJjZms1Rno5em5nS0pKZz09--bf1c5f9301cfff01ba72200a1e7bd5d677c0261f; path=/; HttpOnly; secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "_crm_session=VlZZMm1mSVl3cTBVVGNmemVpOHhubzJEdnd1WmFqS0tyZUk2T055UmEwQ0lMY0E4K2txaHQ5WXExdUgyd3J2LzZWcDBkRTdONEpQSWF4eC9LcDdPN3c9PS0tM0lXbVRGNlp6MmJ3NWdYMXpZY1BHUT09--919996e38b2ac04c165341e14c608670bed4359c; path=/; HttpOnly; secure"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"exists\": true,\n    \"sales_details\": {\n        \"id\": \"587ddb2b5a9db31da9000001\",\n        \"name\": \"Tanmay Ghawte\"\n    },\n    \"sales_phone\": \"01234567711\",\n    \"lead\": {\n        \"email\": \"riddhi.takawale@sell.do\",\n        \"phone\": \"7972585329\",\n        \"secondary_emails\": [\n            \"digvijay.tmmmhul@sell.do\"\n        ]\n    },\n    \"status\": 200\n}"
+						}
+					]
+				}
+			],
+			"description": "This API is used to **Create/Update/Retrieve** a lead in Sell.do."
+		},
+		{
+			"name": "Followup",
+			"item": [
+				{
+					"name": "Create Followup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//set Lead_db_id variable",
+									"const response = pm.response.json();",
+									"",
+									"let followup_id = response.followup._id;",
+									"pm.collectionVariables.set(\"followup_id\", followup_id);",
+									"",
+									"//Tests",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+									"});",
+									"",
+									"pm.test(\"Follow-up is scheduled successfully\", function () {",
+									"    pm.expect(response.followup[\"status\"]).to.eql(\"scheduled\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"api_key\": \"{{full_access_api_key}}\",\n    \"client_id\": \"{{client_id}}\",\n    \"followup\": {\n        \"followup_type\": \"email\",\n        \"lead_id\": \"{{lead_db_id}}\",\n        \"scheduled_on\": \"30-09-2023 00:00 IST\", //Mandatory Field // Add suffix as IST to schedule on Exact-time as per Indian Standard Time.\n        \"status\": \"scheduled\",\n        \"subject\": \"Update\",\n        \"agenda\": \"agenda\",\n        \"type\": \"followup\"\n    }\n    // \"user_email\": \"{{user_email}}\",\n    // \"user_token\": \"{{user_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_url}}/client/leads/add_lead_db_id/followups.json",
+							"host": [
+								"{{Base_url}}"
+							],
+							"path": [
+								"client",
+								"leads",
+								"add_lead_db_id",
+								"followups.json"
+							]
+						},
+						"description": "This API is used to **Schedule a Follow-up** for a lead in Sell.Do.\n\n| **Field** | **Data Type** | **Possible Values** | **Description** |\n| --- | --- | --- | --- |\n| api_key |  |  | Add website full access api key. |\n| client_id |  |  |  |\n| followup.followup_type |  |  |  |\n| followup.lead_id |  |  | Add lead Database id. |\n| followup.scheduled_on |  |  |  |\n| followup.status |  |  |  |\n| followup.subject |  |  |  |\n| followup.agenda |  |  |  |\n| followup.type |  |  |  |"
+					},
+					"response": [
+						{
+							"name": "Create Followup",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"api_key\": \"d2d386fbcc9805220d76fa9137519e78\",\n    \"client_id\": \"587ddb2b5a9db31da9000002\",\n    \"followup\": {\n        \"followup_type\": \"email\",\n        \"lead_id\": \"64992d6fb0834586c0623eb1\",\n        \"scheduled_on\": \"30-09-2023 00:00 IST\", //Mandatory Field // Add suffix as IST to schedule on Exact-time\n        \"status\": \"scheduled\",\n        \"subject\": \"Update\",\n        \"agenda\": \"agenda\",\n        \"type\": \"followup\"\n    }\n    // \"user_email\": \"{{user_email}}\",\n    // \"user_token\": \"{{user_token}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/client/leads/64992d6fb0834586c0623eb1/followups.json",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"client",
+										"leads",
+										"64992d6fb0834586c0623eb1",
+										"followups.json"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "201 Created"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "14195193-5aae-4b42-ac54-71b6a85c73b3"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"584aac247e47081bd549231bbef3aa5f\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.216757"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 26 Jun 2023 06:22:15 GMT"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"followup\": {\n        \"_id\": \"64992e96b0834586c0623ebc\",\n        \"acted_on\": null,\n        \"agenda\": \"agenda\",\n        \"booking_detail_id\": null,\n        \"cancellation_note\": null,\n        \"cancellation_reason\": null,\n        \"created_at\": \"2023-06-26T06:22:14.904Z\",\n        \"followup_type\": \"email\",\n        \"initiated_by\": \"587ddb2c5a9db31da9000005\",\n        \"lead_crm_id\": 88669,\n        \"lead_id\": \"64992d6fb0834586c0623eb1\",\n        \"project_id\": \"587dec4626300a3aca00001c\",\n        \"sales_id\": \"587ddb2c5a9db31da9000005\",\n        \"scheduled_on\": \"2023-09-29T18:30:00.000+00:00\",\n        \"status\": \"scheduled\",\n        \"subject\": \"Update\",\n        \"updated_at\": \"2023-06-26T06:22:14.904Z\",\n        \"extras\": {\n            \"sales_id\": {\n                \"id\": \"587ddb2c5a9db31da9000005\",\n                \"text\": \"Divya Admin Test\"\n            }\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update followup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Tests",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"api_key\": \"{{full_access_api_key}}\",\n    \"client_id\": \"{{client_id}}\",\n    \"followup\": {\n        \"lead_crm_id\": \"{{lead_crm_id}}\",\n        \"agenda\": \"agenda\",\n        \"status\": \"cancelled\", // cancelled | conducted\n        \"scheduled_on\": \"30-08-2023 05:00 IST\", // required, UTC time\n        \"subject\": \"sss\",\n        \"updated_at\": \"30-08-2023 05:00 IST\",\n        \"cancellation_reason\": \"Incorrect followup date\", // Ask for list of possible reasons from Support Team\n        \"cancellation_note\": \"Not Available\"\n        // \"extras\": {\n        //     \"sales_id\": {\n        //         \"id\": \"5e1c3d3a0c7392055d349fe0\",\n        //         \"text\": \"Presalesuserr1 R\"\n        //     }\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_url}}/client/leads/add_lead_crm_id/followups/add_followup_id",
+							"host": [
+								"{{Base_url}}"
+							],
+							"path": [
+								"client",
+								"leads",
+								"add_lead_crm_id",
+								"followups",
+								"add_followup_id"
+							]
+						},
+						"description": "This API is used to **Update** an existing scheduled Follow-up for a lead in Sell.Do.\n\n| **Field** | **Data Type** | **Possible Values** | **Description** |\n| --- | --- | --- | --- |\n| api_key |  |  | Add Website full access api key. |\n| client_id |  |  |  |\n| followup.lead_crm_id |  |  | Add lead crm id. |\n| followup.agenda |  |  |  |\n| followup.status |  |  |  |\n| followup.scheduled_on |  |  |  |\n| followup.subject |  |  |  |\n| followup.updated_at |  |  |  |\n| followup.cancellation_reason |  |  |  |\n| followup.cancellation_note |  |  |  |"
+					},
+					"response": [
+						{
+							"name": "Update followup",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"api_key\": \"d2d386fbcc9805220d76fa9137519e78\",\n    \"client_id\": \"587ddb2b5a9db31da9000002\",\n    \"followup\": {\n        \"lead_crm_id\": \"88671\",\n        \"agenda\": \"agenda\",\n        \"status\": \"cancelled\", // cancelled | conducted\n        \"scheduled_on\": \"30-07-2023 00:00 IST\", // required, UTC time\n        \"subject\": \"subject\",\n        \"updated_at\": \"\",\n        \"cancellation_reason\": \"Incorrect followup date\", // Ask for list of possible reasons from Support Team\n        \"cancellation_note\": \"Not available\"\n        // \"extras\": {\n        //     \"sales_id\": {\n        //         \"id\": \"5e1c3d3a0c7392055d349fe0\",\n        //         \"text\": \"Presalesuserr1 R\"\n        //     }\n        }\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/client/leads/88671/followups/64993bb2b0834504dabaaa93",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"client",
+										"leads",
+										"88671",
+										"followups",
+										"64993bb2b0834504dabaaa93"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "200 OK"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "8a85607c-d344-4162-91ec-8bda0b04de86"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d7553ee60b37a1c75bb945961f96cdac\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.182772"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 26 Jun 2023 07:18:46 GMT"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"followup\": {\n        \"_id\": \"64993bb2b0834504dabaaa93\",\n        \"acted_on\": null,\n        \"agenda\": \"agenda\",\n        \"booking_detail_id\": null,\n        \"cancellation_note\": \"Not available\",\n        \"cancellation_reason\": \"Incorrect followup date\",\n        \"created_at\": \"2023-06-26T07:18:10.852Z\",\n        \"followup_type\": \"email\",\n        \"initiated_by\": \"587ddb2c5a9db31da9000005\",\n        \"lead_crm_id\": 88671,\n        \"lead_id\": \"64993afbb0834504dabaaa75\",\n        \"project_id\": \"5886efb35a9db35df300000a\",\n        \"sales_id\": \"587ddb2c5a9db31da9000005\",\n        \"scheduled_on\": \"2023-07-29T18:30:00.000+00:00\",\n        \"status\": \"cancelled\",\n        \"subject\": \"subject\",\n        \"updated_at\": null,\n        \"extras\": {\n            \"sales_id\": {\n                \"id\": \"587ddb2c5a9db31da9000005\",\n                \"text\": \"Divya Admin Test\"\n            }\n        }\n    },\n    \"message\": \"Followup is cancelled successfully\"\n}"
+						}
+					]
+				}
+			],
+			"description": "This API is used to **Schedule/Update** a follow-up for a lead in Sell.Do."
+		},
+		{
+			"name": "Site Visit",
+			"item": [
+				{
+					"name": "Create Site visit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"//set site_visit_id variable",
+									"let site_visit_id = response.site_visit._id;",
+									"pm.collectionVariables.set(\"site_visit_id\", site_visit_id);",
+									"",
+									"//set project_id variable",
+									"let project_id = response.site_visit.project_id;",
+									"pm.collectionVariables.set(\"project_id\", project_id);",
+									"",
+									"//Tests",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+									"});",
+									"",
+									"pm.test(\"SiteVisit is scheduled successfully\", function () {",
+									"    pm.expect(response.site_visit.status).to.eql(\"scheduled\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"api_key\": \"{{full_access_api_key}}\",\n      \"client_id\": \"{{client_id}}\",\n    \"site_visit\": {\n        \"project_id\": \"{{project_id}}\",\n        \"scheduled_on\": \"2022-09-29 13:00\", // UTC time\n        \"ends_on\": \"2022-09-29 14:00\", // UTC time\n        \"sales_id\": \"\",\n        \"sitevisit_type\": \"visit\", // visit | home_visit | online_walkthrough\n        \"agenda\": \"Test Agenda\",\n        \"confirmed\": true, // true | false\n        \"lead_crm_id\": \"{{lead_crm_id}}\",\n        \"Rating\": \"4\",\n        \"Test\": \"test\"\n        //\"asset_ids\":\"596754b15a9db3846f000022\"\n\n    }\n    //  \"user_email\": \"tanvi+v2@amuratech.com\",\n    //  \"user_token\": \"pzr1doiMpN8kv-2Z8kxc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_url}}/client/leads/{{lead_crm_id}}/site_visits.json",
+							"host": [
+								"{{Base_url}}"
+							],
+							"path": [
+								"client",
+								"leads",
+								"{{lead_crm_id}}",
+								"site_visits.json"
+							]
+						},
+						"description": "This API is Used to **Create a Site Visit** on a lead in Sell.Do.\n\n| **Field** | **Data Type** | **Possible Values** | **Description** |\n| --- | --- | --- | --- |\n| api_key |  |  | Add website full access api key. |\n| client_id |  |  |  |\n| site_visit.project_id |  |  |  |\n| site_visit.scheduled_on |  |  |  |\n| site_visit.ends_on |  |  |  |\n| site_visit.sales_id |  |  |  |\n| site_visit.sitevisit_type |  |  |  |\n| site_visit.agenda |  |  |  |\n| site_visit.confirmed |  |  |  |\n| site_visit.lead_crm_id |  |  |  |\n| site_visit.asset_ids |  |  |  |"
+					},
+					"response": [
+						{
+							"name": "Create Site visit",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n      \"api_key\": \"{{full_access_api_key}}\",\n      \"client_id\": \"{{client_id}}\",\n    \"site_visit\": {\n        \"project_id\": \"{{project_id}}\",\n        \"scheduled_on\": \"2022-09-29 13:00\", // UTC time\n        \"ends_on\": \"2022-09-29 14:00\", // UTC time\n        \"sales_id\": \"\",\n        \"sitevisit_type\": \"visit\", // visit | home_visit | online_walkthrough\n        \"agenda\": \"Test Agenda\",\n        \"confirmed\": true, // true | false\n        \"lead_crm_id\": \"88672\",\n        \"Rating\": \"4\",\n        \"Test\": \"test\"\n        //\"asset_ids\":\"596754b15a9db3846f000022\"\n\n    }\n    //  \"user_email\": \"tanvi+v2@amuratech.com\",\n    //  \"user_token\": \"pzr1doiMpN8kv-2Z8kxc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/client/leads/88672/site_visits.json",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"client",
+										"leads",
+										"88672",
+										"site_visits.json"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "201 Created"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "5b5f4146-855b-4ec0-9475-91f11f2b7742"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b448f2d048cca15afc76928d1c164805\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.982061"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 26 Jun 2023 08:45:54 GMT"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"site_visit\": {\n        \"_id\": \"64995041b08345511fc07a76\",\n        \"agenda\": \"Test Agenda\",\n        \"booking_detail_id\": null,\n        \"campaign_info\": {\n            \"name\": \"walkin\",\n            \"id\": \"587ddb3b5a9db31da9000187\",\n            \"medium_type\": \"manual_entry\",\n            \"medium_value\": \"mobile_app\",\n            \"source\": null,\n            \"sub_source\": null,\n            \"when\": \"2023/06/26 07:16:10 +0000\",\n            \"form_id\": null,\n            \"mcid\": null,\n            \"uuid\": null,\n            \"suid\": null,\n            \"rule_id\": null,\n            \"project_id\": null,\n            \"routing_request_id\": null,\n            \"forced_assigment\": null\n        },\n        \"conducted_on\": null,\n        \"confirmed\": true,\n        \"created_at\": \"2023-06-26T08:45:53.963Z\",\n        \"custom_cgggcgf\": null,\n        \"custom_datefield_data\": null,\n        \"custom_rating\": null,\n        \"custom_test\": null,\n        \"ends_on\": \"2022-09-29T14:00:00.000+00:00\",\n        \"external_calendar_reference\": {},\n        \"external_participants\": [],\n        \"gps_tracking\": {},\n        \"initiated_by\": \"587ddb2c5a9db31da9000005\",\n        \"interested_property_id\": null,\n        \"lead_crm_id\": 88672,\n        \"lead_id\": \"64993b39b0834504dabaaa82\",\n        \"notes\": null,\n        \"participants\": [],\n        \"pickup\": false,\n        \"pickup_location\": null,\n        \"pickup_time\": null,\n        \"project_id\": \"587dec4626300a3aca00001c\",\n        \"sales_id\": \"587ddb2c5a9db31da9000005\",\n        \"scheduled_on\": \"2022-09-29T13:00:00.000+00:00\",\n        \"sitevisit_type\": \"visit\",\n        \"status\": \"scheduled\",\n        \"team_id\": \"\",\n        \"updated_at\": \"2023-06-26T08:45:53.963Z\",\n        \"google_calendar_invite\": \"\",\n        \"ms365_calendar_invite\": \"\",\n        \"zoom_calendar_invite\": \"\",\n        \"extras\": {\n            \"channel_partner\": {\n                \"id\": \"\",\n                \"text\": \"NA\"\n            },\n            \"sitevisit_type\": {\n                \"id\": \"visit\",\n                \"text\": \"Site Visit\"\n            },\n            \"sales_id\": {\n                \"id\": \"587ddb2c5a9db31da9000005\",\n                \"text\": \"Divya Admin Test\"\n            }\n        },\n        \"sent_verification_on_sms_email\": false,\n        \"verified_through\": \"\",\n        \"sent_verification\": false,\n        \"allow_calendar_resync\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Site Visit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Tests",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"api_key\": \"{{full_access_api_key}}\",\n    \"client_id\": \"{{client_id}}\",\n    \"site_visit\": {\n        \"_id\": \"{{site_visit_id}}\", //Mandatory(site_visit_id)\n        \"agenda\": \"test agenda\",\n        // \"booking_detail_id\": null,\n        // \"conducted_on\": null,\n        // \"confirmed\": true,\n        // \"created_at\": \"\",\n        // \"ends_on\": \"\",\n        // \"external_calendar_reference\": {},\n        // \"external_participants\": [],\n        // \"gps_tracking\": {},\n        \"initiated_by\": \"\",\n        \"interested_property_id\": null,\n        \"lead_crm_id\": \"{{lead_crm_id}}\", //Mandatory\n        \"lead_id\": \"{{lead_db_id}}\", //Mandatory\n        \"notes\": null,\n        \"participants\": [],\n        \"pickup\": false,\n        \"pickup_location\": null,\n        \"pickup_time\": null,\n        \"project_id\": \"{{project_id}}\",\n        \"sales_id\": \"{{sales_id}}\",\n        \"scheduled_on\": \"2023-09-20 15:00 IST\",\n        \"sitevisit_type\": \"visit\",\n        \"status\": \"scheduled\",\n        \"team_id\": \"\",\n        \"updated_at\": \"2022-09-08\",\n        \"asset_data\": [],\n        //\"asset_ids\":\"\",\n        \"extras\": {\n            \"channel_partner\": {\n                \"id\": \"\",\n                \"text\": \"NA\"\n            },\n            \"sitevisit_type\": {\n                \"id\": \"visit\",\n                \"text\": \"Visit\"\n            },\n            \"sales_id\": {\n                \"id\": \"587ddb2b5a9db31da9000001\",\n                \"text\": \"Tanmay Ghawate\"\n            },\n            \"team_id\": {\n                \"id\": \"\",\n                \"text\": \"\"\n            }\n        },\n        \"allow_calendar_resync\": null\n    }\n    // \"user_email\": \"tanvi+v2@amuratech.com\",\n    // \"user_token\": \"CJdtWXQRRoyuGjE_a2iP\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_url}}/client/leads/x/site_visits/{{site_visit_id}}.json",
+							"host": [
+								"{{Base_url}}"
+							],
+							"path": [
+								"client",
+								"leads",
+								"x",
+								"site_visits",
+								"{{site_visit_id}}.json"
+							]
+						},
+						"description": "This API is used to **Update** an Existing Site Visit on a lead in Sell.Do."
+					},
+					"response": [
+						{
+							"name": "Update Site Visit",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"api_key\": \"{{full_access_api_key}}\",\n    \"client_id\": \"{{client_id}}\",\n    \"site_visit\": {\n        \"_id\": \"64995041b08345511fc07a76\", //Mandatory(site_visit_id)\n        \"agenda\": \"test agenda\",\n        // \"booking_detail_id\": null,\n        // \"conducted_on\": null,\n        // \"confirmed\": true,\n        // \"created_at\": \"\",\n        // \"custom_city\": null,\n        // \"custom_no_of_people_visiting\": null,\n        // \"custom_rating\": null,\n        // \"custom_test\": null,\n        // \"ends_on\": \"\",\n        // \"external_calendar_reference\": {},\n        // \"external_participants\": [],\n        // \"gps_tracking\": {},\n        \"initiated_by\": \"\",\n        \"interested_property_id\": null,\n        \"lead_crm_id\": \"88672\", //Mandatory\n        \"lead_id\": \"64993b39b0834504dabaaa82\", //Mandatory\n        \"notes\": null,\n        \"participants\": [],\n        \"pickup\": false,\n        \"pickup_location\": null,\n        \"pickup_time\": null,\n        \"project_id\": \"{{project_id}}\",\n        \"sales_id\": \"{{sales_id}}\",\n        \"scheduled_on\": \"2023-09-20 15:00 IST\",\n        \"sitevisit_type\": \"visit\",\n        \"status\": \"scheduled\",\n        \"team_id\": \"\",\n        \"updated_at\": \"2022-09-08\",\n        \"asset_data\": [],\n        //\"asset_ids\":\"\",\n        \"extras\": {\n            \"channel_partner\": {\n                \"id\": \"\",\n                \"text\": \"NA\"\n            },\n            \"sitevisit_type\": {\n                \"id\": \"visit\",\n                \"text\": \"Visit\"\n            },\n            \"sales_id\": {\n                \"id\": \"587ddb2b5a9db31da9000001\",\n                \"text\": \"Tanmay Ghawate\"\n            },\n            \"team_id\": {\n                \"id\": \"\",\n                \"text\": \"\"\n            }\n        },\n        \"allow_calendar_resync\": null\n    }\n    // \"user_email\": \"tanvi+v2@amuratech.com\",\n    // \"user_token\": \"CJdtWXQRRoyuGjE_a2iP\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/client/leads/x/site_visits/64995041b08345511fc07a76.json",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"client",
+										"leads",
+										"x",
+										"site_visits",
+										"64995041b08345511fc07a76.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Status",
+									"value": "200 OK"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "0a627ad4-1cb2-47f3-ad45-f4a89cd11e96"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"115e3c82be5093d4811b6265099bf9a7\""
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.470610"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Expires",
+									"value": "Fri, 01 Jan 1990 00:00:00 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 26 Jun 2023 08:47:52 GMT"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Phusion Passenger(R) 6.0.13"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 + Phusion Passenger(R) 6.0.13"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"site_visit\": {\n        \"_id\": \"64995041b08345511fc07a76\",\n        \"agenda\": \"test agenda\",\n        \"booking_detail_id\": null,\n        \"campaign_info\": {\n            \"name\": \"walkin\",\n            \"id\": \"587ddb3b5a9db31da9000187\",\n            \"medium_type\": \"manual_entry\",\n            \"medium_value\": \"mobile_app\",\n            \"source\": null,\n            \"sub_source\": null,\n            \"when\": \"2023/06/26 07:16:10 +0000\",\n            \"form_id\": null,\n            \"mcid\": null,\n            \"uuid\": null,\n            \"suid\": null,\n            \"rule_id\": null,\n            \"project_id\": null,\n            \"routing_request_id\": null,\n            \"forced_assigment\": null\n        },\n        \"conducted_on\": null,\n        \"confirmed\": true,\n        \"created_at\": \"2023-06-26T08:45:53.963Z\",\n        \"custom_cgggcgf\": null,\n        \"custom_datefield_data\": null,\n        \"custom_rating\": null,\n        \"custom_test\": null,\n        \"ends_on\": \"2022-09-29T14:00:00.000+00:00\",\n        \"external_calendar_reference\": {},\n        \"external_participants\": [],\n        \"gps_tracking\": {},\n        \"initiated_by\": \"\",\n        \"interested_property_id\": null,\n        \"lead_crm_id\": 88672,\n        \"lead_id\": \"64993b39b0834504dabaaa82\",\n        \"notes\": null,\n        \"participants\": [],\n        \"pickup\": false,\n        \"pickup_location\": null,\n        \"pickup_time\": null,\n        \"project_id\": \"587dec4626300a3aca00001c\",\n        \"sales_id\": \"587ddb2b5a9db31da9000001\",\n        \"scheduled_on\": \"2023-09-20T09:30:00.000+00:00\",\n        \"sitevisit_type\": \"visit\",\n        \"status\": \"scheduled\",\n        \"team_id\": \"63e3bb3bb08345e0ce1e9a94\",\n        \"updated_at\": \"2022-09-08T00:00:00.000Z\",\n        \"google_calendar_invite\": \"\",\n        \"ms365_calendar_invite\": \"\",\n        \"zoom_calendar_invite\": \"\",\n        \"extras\": {\n            \"channel_partner\": {\n                \"id\": \"\",\n                \"text\": \"NA\"\n            },\n            \"sitevisit_type\": {\n                \"id\": \"visit\",\n                \"text\": \"Site Visit\"\n            },\n            \"sales_id\": {\n                \"id\": \"587ddb2b5a9db31da9000001\",\n                \"text\": \"Tanmay Ghawte\"\n            },\n            \"team_id\": {\n                \"id\": \"63e3bb3bb08345e0ce1e9a94\",\n                \"text\": \"Phyllis\"\n            }\n        },\n        \"sent_verification_on_sms_email\": false,\n        \"verified_through\": \"\",\n        \"sent_verification\": false,\n        \"allow_calendar_resync\": null\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "This API is used to **Schedule/Reschedule** a Site Visit on a lead in Sell.Do."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Base_url",
+			"value": "https://v2.sell.do",
+			"type": "string"
+		},
+		{
+			"key": "client_id",
+			"value": "587ddb2b5a9db31da9000002",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "fa8d6ca0217e676a7b0e06f51c32568c",
+			"type": "string"
+		},
+		{
+			"key": "full_access_api_key",
+			"value": "d2d386fbcc9805220d76fa9137519e78",
+			"type": "string"
+		},
+		{
+			"key": "sales_id",
+			"value": "587ddb2b5a9db31da9000001",
+			"type": "string"
+		},
+		{
+			"key": "project_id",
+			"value": "587dec4626300a3aca00001c",
+			"type": "string"
+		},
+		{
+			"key": "lead_phone",
+			"value": ""
+		},
+		{
+			"key": "lead_crm_id",
+			"value": ""
+		},
+		{
+			"key": "lead_db_id",
+			"value": ""
+		},
+		{
+			"key": "followup_id",
+			"value": ""
+		},
+		{
+			"key": "site_visit_id",
+			"value": ""
+		}
+	]
+}
